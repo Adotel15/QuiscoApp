@@ -1,5 +1,6 @@
+
 // This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Prisma en un ORM (Intermediario entre Proyecto y DB) 
 
 generator client {
   provider = "prisma-client-js"
@@ -8,4 +9,44 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+// ******** Comandos ********
+//  -  npx prisma migrate dev : Migra los cambios de nuevos modelos a la base de datos
+//  -  npx prisma migrate reset : Resetar los campos de la db
+//  -  npx primsa studio : Abre un editor propio de Prisma
+
+
+// Para hacer un model para guardar
+// Siempre id en mysql es un Int
+model Producto {
+  // El id primero sera 1 y luego ++
+  id Int @id @default(autoincrement())
+  nombre String
+  precio Float
+  imagen String
+  // Los campos son obligatorios, para hacerlo opcional añade ?
+  // cantidad Int?
+
+  // Para relacionar Categoria y Producto, se hace con RELATION
+  //  - fields : variable de este modelo que se relacionará con Categoria
+  //  - references : que variable es dentro de Categoria
+  categoria Categoria @relation( fields: [categoriaId], references: [id] )
+  categoriaId Int
+}
+
+model Categoria {
+  id Int @id @default(autoincrement())
+  nombre String
+  icono String
+  // Esto hace que dentro de la categoria, haya un array de Productos
+  productos Producto[]
+}
+
+model Orden {
+  id Int @id @default(autoincrement())
+  nombre String
+  fecha String
+  total Float
+  pedido Json
 }
