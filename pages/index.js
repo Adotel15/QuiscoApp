@@ -1,16 +1,20 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import { PrismaClient } from '@prisma/client'
+import Layout from '../layout/Layout'
 
 
-export default function Home({ categorias }) {
+export default function Home() {
 
-    console.log(categorias)
+
     return (
-      <h1>NextJS</h1>
+      <Layout>
+        <h1>Inicio</h1>
+      </Layout>
     )
 }
 
+
+/*
 // -------- Nota ----------
 // Server side props se ejecuta cada vez que se renderiza la página, el return props se puede extraer
 //  directamente en el componente, y pasa del lado del servidor al lado del cliente
@@ -29,3 +33,4 @@ export const getServerSideProps = async () => {
     }
   }
 }
+*/
