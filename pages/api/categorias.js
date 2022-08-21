@@ -11,7 +11,14 @@ const Prisma = new PrismaClient()
 
 export default async function handler(req, res) {
 
-    const categorias = await Prisma.categoria.findMany()
+    // Find Many te trae las categorias, y el include es porque cada categoria
+    // incluye un array de productos, para que los traiga tambien se hace includes true
+    // Esto se llama eager loading, cargar todo de una, eficiente en proyectos pequeños
+    const categorias = await Prisma.categoria.findMany({
+        include : {
+            productos : true
+        }
+    })
 
     // Devuelve el json (Html request 200) de categorias
     res.status(200).json(categorias)
