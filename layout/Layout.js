@@ -1,13 +1,33 @@
 
 import Head from "next/dist/shared/lib/head";
 import Sidebar from "../components/Sidebar";
+// Modal estandar de npm
+import Modal from 'react-modal'
+import useQuiosco from "../hooks/useQuiosco";
+import ModalProducto from "../components/ModalProducto";
 
 // Tailwind => 
 //      - h-screen => Coge toda la altura de la pantalla
 //      - overflow-y-scroll => Para que solo haga scroll el div
 
+// Parte de la libreria de NPM react-modal
+const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+    },
+  };
+
+Modal.setAppElement("#__next")
+
 
 export default function Layout({ children, pagina }) {
+
+    const { modal } = useQuiosco()
 
     return (
         <>
@@ -29,6 +49,14 @@ export default function Layout({ children, pagina }) {
                 </main>
 
             </div>
+            {modal && (
+                <Modal
+                    isOpen = {modal}
+                    styles = {customStyles}
+                >
+                    <ModalProducto />
+                </Modal>
+            )}
         </>
     );
 }

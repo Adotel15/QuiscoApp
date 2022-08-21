@@ -6,7 +6,7 @@ import useQuiosco from "../hooks/useQuiosco"
 const Producto = ({ producto }) => {
 
     const { nombre, imagen, precio } = producto
-    const { handleSetProducto } = useQuiosco()
+    const { handleSetProducto, handleChangeModal } = useQuiosco()
 
     return (
         <div className = "border p-3">
@@ -27,7 +27,10 @@ const Producto = ({ producto }) => {
                 <button
                     type = "button"
                     className = "bg-indigo-600 hover:bg-indigo-800 text-white w-full  mt-5 p-3 uppercase font-bold"
-                    onClick = {() => handleSetProducto()}
+                    onClick = {() => {
+                        handleSetProducto(producto)
+                        handleChangeModal()
+                    }}
                 >
                     Agregar
                 </button>
