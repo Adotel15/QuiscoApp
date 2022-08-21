@@ -3,8 +3,11 @@ import Head from "next/dist/shared/lib/head";
 import Sidebar from "../components/Sidebar";
 // Modal estandar de npm
 import Modal from 'react-modal'
+import { ToastContainer } from "react-toastify";
 import useQuiosco from "../hooks/useQuiosco";
 import ModalProducto from "../components/ModalProducto";
+
+import 'react-toastify/dist/ReactToastify.css'
 
 // Tailwind => 
 //      - h-screen => Coge toda la altura de la pantalla
@@ -12,6 +15,10 @@ import ModalProducto from "../components/ModalProducto";
 
 // Parte de la libreria de NPM react-modal
 const customStyles = {
+    overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    },
+
     content: {
       top: '50%',
       left: '50%',
@@ -38,7 +45,7 @@ export default function Layout({ children, pagina }) {
 
             <div className = "md:flex">
 
-                <aside className = "md:w-4/12 xl:w-1/4 2xl:w-1/5">
+                <aside className = "md:w-4/12 xl:w-1/4 2xl:w-1/5 overflow-y-auto h-screen">
                     <Sidebar />
                 </aside>
 
@@ -52,11 +59,13 @@ export default function Layout({ children, pagina }) {
             {modal && (
                 <Modal
                     isOpen = {modal}
-                    styles = {customStyles}
+                    style = {customStyles}
                 >
                     <ModalProducto />
                 </Modal>
             )}
+
+            <ToastContainer />
         </>
     );
 }

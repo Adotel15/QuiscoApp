@@ -1,6 +1,7 @@
 
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const QuioscoContext = createContext()
 
@@ -10,6 +11,7 @@ const QuioscoProvider = ({ children }) => {
     const [ categoriaActual, setCategoriaActual ] = useState({})
     const [ producto, setProducto ] = useState({})
     const [ modal, setModal ] = useState(false)
+    const [ pedido, setPedido ] = useState([])
 
     const obtenerCategorias = async () => {
 
@@ -41,6 +43,32 @@ const QuioscoProvider = ({ children }) => {
     const handleChangeModal = () => {
         setModal(!modal)
     }
+
+    // Los párametros de entrada, van a sacar del objeto con destructuring, categoriaId, e imagen, y me quedo con el resto que si es útil
+    const handleAgregarPedido = ({categoriaId, imagen, ...producto}) => {
+
+        // .some itera todo el array y devuelve true si se cumple una condicion
+        if(pedido.some( productoState => productoState.id === producto.id)){
+
+            const pedidoActualizado = pedido.map( productoState => 
+                productoState.id === producto.id ? 
+                    producto : productoState)
+
+            setPedido(pedidoActualizado)
+            toast.success("Pedido actualizado")
+
+        } else {
+
+            setPedido([...pedido, producto])
+            toast.success(`+${producto.cantidad} de ${producto.nombre}`)
+
+        }
+
+        setModal(false)
+
+        
+    }
+
     return (
         <QuioscoContext.Provider
             value = {{
@@ -50,7 +78,9 @@ const QuioscoProvider = ({ children }) => {
                 producto,
                 handleSetProducto,
                 modal,
-                handleChangeModal
+                handleChangeModal,
+                handleAgregarPedido,
+                pedido
             }}
         >
             { children }
