@@ -100,6 +100,35 @@ const QuioscoProvider = ({ children }) => {
     const colocarOrden = async e => {
         e.preventDefault()
 
+        try {
+            // Por defecto axios hace un get
+            await axios.post('/api/ordenes', { 
+                // Tiene que tener el mismo nombre que en la DB, y que sea del mismo tipo, string, float o Json
+                pedido, 
+                nombre, 
+                total,
+                // En la DB la variable es un string no un número
+                fecha : Date.now().toString()
+            })
+
+            // Resetear la App
+            setCategoriaActual(categorias[0])
+            setPedido([])
+            setNombre('')
+            setTotal(0)
+
+            toast.success('Pedido Realizado Correctamente')
+
+            setTimeout(() => {
+                router.push('/')
+            }, 3000);
+
+        } catch (error) {
+            console.error(error)
+        } finally {
+            console.log("Llegamos al finally")
+        }
+
     }
 
 
